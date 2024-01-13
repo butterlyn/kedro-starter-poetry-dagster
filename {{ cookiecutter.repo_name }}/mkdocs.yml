@@ -1,0 +1,145 @@
+site_name: Orchestration Demo None
+
+repo_url: https://AEMO-Application-Delivery@dev.azure.com/AEMO-Application-Delivery/WAFSD/_git/orchestration-demo
+repo_name: orchestration-demo
+
+nav:
+  - User Guide: sections/User Guide/
+  - Development Guide: sections/Development Guide/
+  - API Reference: reference/  # auto-generate api references (https://mkdocstrings.github.io/recipes/)
+  - Model Architecture:
+    - Architecture logical model: reference/mermaid.md
+
+theme:
+  name: 'material'
+  features:
+    # - toc.integrate
+    # - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - navigation.tabs
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+    - content.code.annotate
+    - content.code.select
+    - content.code.copy
+    - content.tooltips
+
+plugins:
+  - search
+  - table-reader
+  # when building for offline usage, make sure to disable the following configuration settings: instant loading, site analytics, git repository, versioning and comment systems
+  - offline
+  - redirects:
+      redirect_maps:
+        'index.md': 'sections/User Guide/index.md'
+  - mike:
+      alias_type: symlink
+      redirect_template: null
+      deploy_prefix: ''
+      canonical_version: null
+      version_selector: true
+      css_dir: stylesheets
+      javascript_dir: javascripts
+  - plantuml:
+      puml_url: https://www.plantuml.com/plantuml/
+      puml_keyword: plantuml
+  - gen-files:
+      scripts:
+      - docs/scripts/gen_ref_pages.py
+  - literate-nav:
+      nav_file: SUMMARY.md
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          options:
+            docstring_style: numpy  # numpy, google, sphinx
+            docstring_section_style: table  # table, list, spacy
+            allow_inspection: false
+            show_bases: true
+            show_root_members_full_path: false
+            show_object_full_path: false
+            show_source: true
+            show_root_heading: true
+            show_root_toc_entry: true
+            group_by_category: true
+            show_category_heading: false
+            show_symbol_type_toc: true
+            show_symbol_type_heading: true
+            extensions:
+            - griffe_fieldz
+            # - pydantic: {schema: true}
+  - glightbox:
+      touchNavigation: true
+      loop: false
+      effect: zoom
+      slide_effect: slide
+      width: 100%
+      height: auto
+      zoomable: true
+      draggable: true
+      skip_classes:
+        - custom-skip-class-name
+      auto_caption: false
+      caption_position: bottom
+
+markdown_extensions:
+  - toc:
+      permalink: true
+      permalink_title: ""
+  - abbr
+  - def_list
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - admonition
+  - pymdownx.arithmatex:
+      generic: true
+  - footnotes
+  - pymdownx.details
+  - attr_list
+  - md_in_html
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.tabbed:
+        alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+extra_javascript:
+  - javascripts/katex.js
+  - https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.js  
+  - https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/contrib/auto-render.min.js
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+extra_css:
+  - https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.css
+  - stylesheets/extra.css
+
+extra:
+  version:
+    provider: mike
+  generator: false
+
+watch:
+  - src
+  - docs

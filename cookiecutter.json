@@ -1,0 +1,8 @@
+{
+    "project_name": "New Kedro Project",
+    "repo_name": "{{ cookiecutter.project_name.strip().replace(' ', '-').replace('_', '-').lower() }}",
+    "python_package": "{{ cookiecutter.project_name.strip().replace(' ', '_').replace('-', '_').lower() }}",
+    "homepage": "none",
+    "short_description": "",
+    "author": "Nicholas Butterly"
+}

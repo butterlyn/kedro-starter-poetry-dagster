@@ -1,0 +1,81 @@
+variables:
+  python_version: '3.11'
+
+name: Azure Development CI/CD
+
+pr:
+  branches:
+    include:
+      - master
+trigger:
+  branches:
+    include:
+      - master
+  tags:
+    include:
+      - '*.*.*'  # i.e., trigger on tagging a version, such as `0.3.2`
+
+jobs:
+
+- job: build_versioned_documentation
+  displayName: Build Versioned Documentation
+  condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')  # only run if the pipeline is triggered by a tag
+  dependsOn:
+    - build_unversioned_documentation
+  steps:
+  - checkout: self
+    submodules: true
+    persistCredentials: true
+  - bash: |
+      TAG_NAME=${BUILD_SOURCEBRANCH/refs\/tags\//}
+      echo "##vso[task.setvariable variable=tagName]$TAG_NAME"
+    displayName: Extract tag name
+  - bash: |
+      curl -sSL https://install.python-poetry.org | python3 -
+    displayName: Install Poetry
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: $(python_version)
+      addToPath: true
+    displayName: Set python version
+  - bash: |
+      poetry install
+    displayName: Installing dependencies
+  - bash: |
+      git config --global user.email "nicholas.butterly@aemo.com.au"
+      git config --global user.name "Nicholas Butterly"
+    displayName: Configuring git
+  - bash: |
+      git fetch --all
+      git pull --all
+      poetry run mkdocs build
+      poetry run mike deploy --push --update-aliases $(tagName) stable
+    displayName: Push to gh-pages branch
+
+- job: build_unversioned_documentation
+  displayName: Build Unversioned Documentation
+  steps:
+  - checkout: self
+    submodules: true
+    persistCredentials: true
+  - bash: |
+      curl -sSL https://install.python-poetry.org | python3 -
+    displayName: Install Poetry
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: $(python_version)
+      addToPath: true
+    displayName: Set python version
+  - bash: |
+      poetry install
+    displayName: Installing dependencies
+  - bash: |
+      git config --global user.email "nicholas.butterly@aemo.com.au"
+      git config --global user.name "Nicholas Butterly"
+    displayName: Configuring git
+  - bash: |
+      git fetch --all
+      git pull --all
+      poetry run mkdocs build
+      poetry run mike deploy --push --update-aliases development
+    displayName: Push to gh-pages branch

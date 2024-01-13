@@ -1,0 +1,13 @@
+[flake8]
+extend-ignore = E501,W503
+exclude =
+    .git,
+    .venv,
+    __pycache__,
+    docs,
+    build,
+    dist,
+    site,
+    output,
+    multioutput,
+    data

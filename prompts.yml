@@ -1,0 +1,25 @@
+project_name:
+  title: "Project Name"
+  text: |
+    Please enter a name for your new project.
+    Spaces, hyphens, and underscores are allowed.
+    To skip this step in future use --name
+  regex_validator: "^[\\w -]{2,}$"
+  error_message: |
+    It must contain only alphanumeric symbols, spaces, underscores and hyphens and
+    be at least 2 characters long.
+
+homepage:
+  title: "Homepage"
+  text: |
+    Enter the url of the repository remote you want to use to publish your package. For example, a GitHub or Azure DevOps repository.
+
+short_description:
+  title: "Short Description"
+  text: |
+    Enter a short description of your project.
+
+author:
+  title: "Author"
+  text: |
+    Enter the name of the author of the project.

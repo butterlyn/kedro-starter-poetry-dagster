@@ -1,0 +1,7 @@
+channels:
+  - conda-forge
+dependencies:
+  - python>=3.10.0,<3.12.0  # Dagster and Kedro don't support Python 3.12 yet as of 2024-01-14
+  - poetry>=1.2.0,<2.0.0
+  # all other dependencies, install using `poetry install`
+  # see https://python-poetry.org/
